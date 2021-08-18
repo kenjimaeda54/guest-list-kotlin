@@ -1,0 +1,36 @@
+package com.example.guestlist.service.repository
+
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import com.example.convidados.service.constants.DataBaseConstants
+
+class GetDataBaseHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NOME, null, DATABASE_VERSION) {
+
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(CREATE_TABLE_GUEST)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+
+    }
+
+    companion object {
+        //versao do database e a versao do nosso banco de dados,por exemplo
+        //caso desejo atualizar para acresentar novas fetatures no banco,para nao perder
+        //os novos usuarios mudo a versao,assim sera o metodo onUpgrade
+        //que sera chamado. Nao correndo risco de perder nenhum dados
+        private const val DATABASE_VERSION = 1
+        private const val DATABASE_NOME = "Convidados.db"
+
+        private const val CREATE_TABLE_GUEST =
+            ("create table " + DataBaseConstants.GUEST.TABLE_NAME + " ("
+                    + DataBaseConstants.GUEST.COLUMNS.ID + " integer primary key autoincrement, "
+                    + DataBaseConstants.GUEST.COLUMNS.NAME + " text, "
+                    + DataBaseConstants.GUEST.COLUMNS.PRESENCE + " integer);")
+
+    }
+
+
+}

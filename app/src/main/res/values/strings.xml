@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Guest List</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_all">Todos</string>
+    <string name="menu_presents">Presentes</string>
+    <string name="menu_absents">Ausentes</string>
+    <string name="text_confirmation">Confirmar:</string>
+    <string name="text_name">Nome:</string>
+    <string name="text_editInput">Ex: Joao</string>
+    <string name="yes">Sim</string>
+    <string name="no">Nao</string>
+    <string name="button_salve">Salvar</string>
+    <string name="present_button">presente</string>
+    <string name="ausente_button">ausente</string>
+    <string name="sucess">Sucesso</string>
+    <string name="error">Nao foi possivel salvar</string>
+</resources>
