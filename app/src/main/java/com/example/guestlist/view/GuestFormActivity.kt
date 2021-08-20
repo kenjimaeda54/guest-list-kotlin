@@ -28,7 +28,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         val id = view.id
         if (id == R.id.buttonSalve) {
-            val nameId: TextView = findViewById(R.id.textName)
+            val nameId: TextView = findViewById(R.id.editName)
             val name = nameId.text.toString();
             val presenceId: RadioButton = findViewById(R.id.presentsButton)
             val presence = presenceId.isChecked;
@@ -46,6 +46,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(applicationContext, getString(R.string.error), Toast.LENGTH_SHORT)
                     .show()
             }
+            //fecha activy
+            finish()
         })
 
     }

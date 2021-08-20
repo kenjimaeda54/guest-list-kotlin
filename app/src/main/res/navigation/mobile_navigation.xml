@@ -10,17 +10,17 @@
         android:id="@+id/nav_all"
         android:name="com.example.guestlist.view.AllGuestFragment"
         android:label="@string/menu_all"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_all" />
 
     <fragment
         android:id="@+id/nav_presents"
         android:name="com.example.guestlist.view.PresentsFragment"
         android:label="@string/menu_presents"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_presents" />
 
     <fragment
         android:id="@+id/nav_absents"
         android:name="com.example.guestlist.view.AbsentsFragment"
         android:label="@string/menu_absents"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_absents" />
 </navigation>

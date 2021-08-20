@@ -1,12 +1,11 @@
 package com.example.guestlist.viewModel
 
 
+import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.guestlist.service.model.GuestModel
 import com.example.guestlist.service.repository.Repository
 
@@ -22,8 +21,8 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
         //meu salve precisa de tres argumentos,caso deseja omitir um,posso
         //simplesmente chamar os parâmetros,exemplo: id,name,presence.
         //chamei name e presence
-        mRepository.salve(GuestModel(name = name, presence = presence))
-        mPresent.value = presence
+        mPresent.value  = mRepository.salve(GuestModel(name = name, presence = presence))
+       //vai retornar ture ou false no método save
 
     }
 }
