@@ -19,7 +19,7 @@ import com.example.guestlist.viewModel.AllGuestViewModel
 class AllGuestFragment : Fragment() {
 
     private lateinit var allGuestViewModel: AllGuestViewModel
-    private val mAdapater = AdapterGuest()
+    private val mAdapter = AdapterGuest()
     private var _binding: FragmentAllBinding? = null
 
     // This property is only valid between onCreateView and
@@ -46,14 +46,14 @@ class AllGuestFragment : Fragment() {
         // Metodo findByid  nao referencia nest caso
 
         //Obter o recycle
-        val recycle: RecyclerView = binding.allGuest
+        val recycle = binding.allGuest
 
         //criar o layout
         //layout linear por padrão vertical
         recycle.layoutManager = LinearLayoutManager(context)
 
         // adapter
-        recycle.adapter = mAdapater
+        recycle.adapter = mAdapter
 
         return root
     }
@@ -61,11 +61,12 @@ class AllGuestFragment : Fragment() {
     private fun observe() {
         //por estarmos em um fragment nao possui uma activity, então nao existe o this.
         //viewLifecycleOwner sera responsável por isso
-        allGuestViewModel.guestModel.observe(viewLifecycleOwner,{
-            mAdapater.updatesGuest(it)
-        //          quem faz a união entre o fragment  e o banco,e adapter etnao sera chamado um método no adapter para pegar os dados
+        allGuestViewModel.guestModel.observe(viewLifecycleOwner, {
+            mAdapter.updatesGuest(it)
         })
+        // quem faz a união entre o fragment  e o banco,e adapter entao sera chamado um método no adapter para mandar nossos intens dalis
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
