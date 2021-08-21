@@ -19,13 +19,15 @@ import com.example.guestlist.viewModel.AllGuestViewModel
 class AllGuestFragment : Fragment() {
 
     private lateinit var allGuestViewModel: AllGuestViewModel
+    private val mAdapater = AdapterGuest()
     private var _binding: FragmentAllBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         allGuestViewModel =
@@ -33,23 +35,36 @@ class AllGuestFragment : Fragment() {
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        allGuestViewModel.load()
+        observe()
 
         //para lidar com listagens nos criamos recycleView
         //ele precisa 3 passo
         //Obter Recycler
         //binding foi criado pelo próprio android studio no momento de criar navegacao em drawer,
         //bining.Id da view.
-        // Metodo findByid  nao referencia aui
+        // Metodo findByid  nao referencia nest caso
+
+        //Obter o recycle
         val recycle: RecyclerView = binding.allGuest
 
-        //Definir o layout
-        //e um layout linear por padrão horizontal,
+        //criar o layout
+        //layout linear por padrão vertical
         recycle.layoutManager = LinearLayoutManager(context)
 
-        //Definir o adpater
-        recycle.adapter = AdapterGuest()
+        // adapter
+        recycle.adapter = mAdapater
 
         return root
+    }
+
+    private fun observe() {
+        //por estarmos em um fragment nao possui uma activity, então nao existe o this.
+        //viewLifecycleOwner sera responsável por isso
+        allGuestViewModel.guestModel.observe(viewLifecycleOwner,{
+            mAdapater.updatesGuest(it)
+        //          quem faz a união entre o fragment  e o banco,e adapter etnao sera chamado um método no adapter para pegar os dados
+        })
     }
 
     override fun onDestroyView() {

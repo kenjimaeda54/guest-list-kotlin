@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="25dp">
+<!--   altura precisa ser wrap_content por que o layout renderiza linha por linha,se for
+altura total,cada linha vai ocupar total da tela-->
+
+    <TextView
+        android:id="@+id/text_name_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ola"
+        android:textColor="@color/black"
+        android:textSize="23sp" />
+</LinearLayout>
