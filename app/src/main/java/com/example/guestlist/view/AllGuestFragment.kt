@@ -1,5 +1,6 @@
 package com.example.guestlist.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,15 @@ import androidx.lifecycle.livedata.core.ktx.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.guestlist.databinding.FragmentAllBinding
+import com.example.guestlist.service.constants.GuestConstants
 import com.example.guestlist.view.adapter.AdapterGuest
+import com.example.guestlist.view.listner.ListenerGuest
 import com.example.guestlist.viewModel.AllGuestViewModel
 
 class AllGuestFragment : Fragment() {
 
     private lateinit var allGuestViewModel: AllGuestViewModel
+    private lateinit var mListenerGuest: ListenerGuest
     private val mAdapter = AdapterGuest()
     private var _binding: FragmentAllBinding? = null
 
@@ -35,8 +39,21 @@ class AllGuestFragment : Fragment() {
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        allGuestViewModel.load()
         observe()
+
+        mListenerGuest =  object: ListenerGuest{
+            override fun onClick(id: Int) {
+                val intent = Intent(context,GuestFormActivity::class.java)
+                //para passar parâmetros em para outras activy usando navegacao usamos o putString,se desejamos passar string,
+                //putInt para passar inteiros
+                val bundle = Bundle()
+                bundle.putInt(GuestConstants.GUESTID,id)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+
+        }
+        mAdapter.attachListener(mListenerGuest)
 
         //para lidar com listagens nos criamos recycleView
         //ele precisa 3 passo
@@ -56,6 +73,14 @@ class AllGuestFragment : Fragment() {
         recycle.adapter = mAdapter
 
         return root
+    }
+
+    //fragment seque mesmo ciclo de vida que uma activity então  o método onCreateView e chamado so no momento criar a tela.
+    //se deseja que meus dados carreguem a cada foco na activity sem destruir, preciso chamar o onResume
+    //dentro do escopo onResume a cada foco na activity sera carregado meus dados do banco
+    override fun onResume() {
+        allGuestViewModel.load()
+        super.onResume()
     }
 
     private fun observe() {

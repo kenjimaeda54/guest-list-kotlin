@@ -2,13 +2,12 @@ package com.example.guestlist.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.guestlist.R
+import com.example.guestlist.service.constants.GuestConstants
 import com.example.guestlist.viewModel.GuestFormViewModel
 
 
@@ -20,6 +19,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guest)
         mGuestViewModel = ViewModelProvider(this).get(GuestFormViewModel::class.java)
+        load()
         listeners()
         observes()
 
@@ -37,6 +37,15 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun load() {
+        //nao preciso instance intent ja esta sendo feita pelo AppCompatActivity
+        val bundle = intent.extras
+        //preciso tratar possibilidade do bundle vim nullo
+        if (bundle != null) {
+            mGuestViewModel.load(bundle.getInt(GuestConstants.GUESTID))
+        }
+    }
+
     private fun observes() {
         mGuestViewModel.presentModel.observe(this, {
             if (it) {
@@ -48,6 +57,17 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             }
             //fecha activy
             finish()
+        })
+        mGuestViewModel.guestUser.observe(this, {
+            val name = findViewById<EditText>(R.id.editName)
+            val presenceButton = findViewById<RadioButton>(R.id.presentsButton)
+            val absenteesButton = findViewById<RadioButton>(R.id.absentsButton)
+            name.setText(it.name)
+            if (it.presence) {
+                presenceButton.isChecked = true
+            } else {
+                absenteesButton.isChecked = true
+            }
         })
 
     }

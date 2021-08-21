@@ -17,6 +17,9 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
     private val mPresent = MutableLiveData<Boolean>()
     var presentModel: LiveData<Boolean> = mPresent
 
+    private val mGuestUser = MutableLiveData<GuestModel>()
+    var guestUser = mGuestUser
+
     fun salve(name: String, presence: Boolean) {
         //meu salve precisa de tres argumentos,caso deseja omitir um,posso
         //simplesmente chamar os parâmetros,exemplo: id,name,presence.
@@ -24,5 +27,9 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
         mPresent.value  = mRepository.salve(GuestModel(name = name, presence = presence))
        //vai retornar ture ou false no método save
 
+    }
+
+    fun load(id: Int){
+       mGuestUser.value = mRepository.getUser(id)
     }
 }

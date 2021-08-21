@@ -8,6 +8,7 @@ import com.example.convidados.service.constants.DataBaseConstants
 class GetDataBaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NOME, null, DATABASE_VERSION) {
 
+    //se nos meus testes precisar  faturar preciso desistalar aplicacao,porque o método onCreate e so chamado uma vez.
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_GUEST)
     }
@@ -19,7 +20,7 @@ class GetDataBaseHelper(context: Context) :
     companion object {
         //versao do database e a versao do nosso banco de dados,por exemplo
         //caso desejo atualizar para acresentar novas fetatures no banco,para nao perder
-        //os novos usuarios mudo a versao,assim sera o metodo onUpgrade
+        //os novos usuários mudo a versao,assim sera o método onUpgrade
         //que sera chamado. Nao correndo risco de perder nenhum dados
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NOME = "Convidados.db"

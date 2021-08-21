@@ -12,6 +12,7 @@ class AllGuestViewModel(application: Application) : AndroidViewModel(application
 
     private var mRepository: Repository = Repository.getInstance(application)
 
+
     //guestModel vai ate o repository pega  a instância do banco
     //tudo que esta no banco e setado no método getALl e passado para mGuestModel
     private val mGuestModel = MutableLiveData<List<GuestModel>>()
