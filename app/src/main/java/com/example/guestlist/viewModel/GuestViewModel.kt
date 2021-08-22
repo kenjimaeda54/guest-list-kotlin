@@ -5,10 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.guestlist.service.constants.GuestConstants
 import com.example.guestlist.service.model.GuestModel
 import com.example.guestlist.service.repository.Repository
 
-class AllGuestViewModel(application: Application) : AndroidViewModel(application) {
+class GuestViewModel(application: Application) : AndroidViewModel(application) {
 
     private var mRepository: Repository = Repository.getInstance(application)
 
@@ -19,12 +20,23 @@ class AllGuestViewModel(application: Application) : AndroidViewModel(application
     var guestModel = mGuestModel
 
 
-    fun load() {
-        mGuestModel.value = mRepository.getAll()
+    fun load(id: Int) {
+        when (id) {
+            0 -> {
+                mGuestModel.value = mRepository.getAll()
+            }
+            1 -> {
+                mGuestModel.value = mRepository.getPresents()
+            }
+            else -> {
+                mGuestModel.value = mRepository.getAbsents()
+            }
+        }
+
 
     }
 
-    fun delete(id: Int){
+    fun delete(id: Int) {
         mRepository.delete(id)
     }
 

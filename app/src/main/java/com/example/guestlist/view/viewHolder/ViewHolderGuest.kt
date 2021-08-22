@@ -27,10 +27,9 @@ class ViewHolderGuest(itemView: View, private val listener: ListenerGuest) :
             AlertDialog.Builder(itemView.context)
                 .setTitle(R.string.remocao_convidado)
                 .setMessage(R.string.deseja_remover)
-                .setPositiveButton(R.string.remover) { dialog, wich ->
+                .setPositiveButton(R.string.confirmacao) { dialog, wich ->
                     listener.onDelete(guest.id)
                 }
-                //ultimo parâmetro a funcao que o botao cancelar vai fazer no casso nada
                 .setNeutralButton(R.string.cancelar, null)
                 .show()
             true

@@ -5,25 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.livedata.core.ktx.R
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.guestlist.databinding.FragmentAllBinding
 import com.example.guestlist.service.constants.GuestConstants
 import com.example.guestlist.view.adapter.AdapterGuest
 import com.example.guestlist.view.listner.ListenerGuest
-import com.example.guestlist.viewModel.AllGuestViewModel
+import com.example.guestlist.viewModel.GuestViewModel
 
 class AllGuestFragment : Fragment() {
 
-    private lateinit var allGuestViewModel: AllGuestViewModel
+    private lateinit var guestViewModel: GuestViewModel
     private lateinit var mListener: ListenerGuest
-
     private val mAdapter = AdapterGuest()
     private var _binding: FragmentAllBinding? = null
 
@@ -35,8 +29,8 @@ class AllGuestFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        allGuestViewModel =
-            ViewModelProvider(this).get(AllGuestViewModel::class.java)
+        guestViewModel =
+            ViewModelProvider(this).get(GuestViewModel::class.java)
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -56,8 +50,8 @@ class AllGuestFragment : Fragment() {
             }
 
             override fun onDelete(id: Int) {
-                allGuestViewModel.delete(id)
-                allGuestViewModel.load()
+                guestViewModel.delete(id)
+                guestViewModel.load(GuestConstants.FILTER_ID.ALL)
             }
 
         }
@@ -88,14 +82,14 @@ class AllGuestFragment : Fragment() {
     //se deseja que meus dados carreguem a cada foco na activity sem destruir, preciso chamar o onResume
     //dentro do escopo onResume a cada foco na activity sera carregado meus dados do banco
     override fun onResume() {
-        allGuestViewModel.load()
+        guestViewModel.load(GuestConstants.FILTER_ID.ALL)
         super.onResume()
     }
 
     private fun observe() {
         //por estarmos em um fragment nao possui uma activity, então nao existe o this.
         //viewLifecycleOwner sera responsável por isso
-        allGuestViewModel.guestModel.observe(viewLifecycleOwner, {
+        guestViewModel.guestModel.observe(viewLifecycleOwner, {
             mAdapter.updatesGuest(it)
         })
         // quem faz a união entre o fragment  e o banco,e adapter entao sera chamado um método no adapter para mandar nossos intens dalis

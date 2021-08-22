@@ -1,19 +1,24 @@
 package com.example.guestlist.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.guestlist.databinding.FragmentPresentsBinding
-import com.example.guestlist.viewModel.PresentsViewModel
+import com.example.guestlist.service.constants.GuestConstants
+import com.example.guestlist.view.adapter.AdapterGuest
+import com.example.guestlist.view.listner.ListenerGuest
+import com.example.guestlist.viewModel.GuestViewModel
 
-class  PresentsFragment : Fragment() {
+class PresentsFragment : Fragment() {
 
-    private lateinit var presentsViewModel: PresentsViewModel
+    private lateinit var guestViewModel: GuestViewModel
+    private lateinit var mListener: ListenerGuest
+    private val mAdapter = AdapterGuest()
     private var _binding: FragmentPresentsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -25,17 +30,60 @@ class  PresentsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presentsViewModel =
-            ViewModelProvider(this).get(PresentsViewModel::class.java)
+        guestViewModel =
+            ViewModelProvider(this).get(GuestViewModel::class.java)
 
         _binding = FragmentPresentsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        observe()
 
-        val textView: TextView = binding.textGallery
-        presentsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        //nossa interface e uma classe anônima então nao pode ser chamada direto
+        mListener = object : ListenerGuest {
+            override fun onCLick(id: Int) {
+                val intent = Intent(context, GuestFormActivity::class.java)
+                //para passar parâmetros em para outras activy usando navegacao usamos o putString,se desejamos passar string,
+                //putInt para passar inteiros
+                val bundle = Bundle()
+                bundle.putInt(GuestConstants.GUESTID, id)
+                intent.putExtras(bundle)
+
+                startActivity(intent)
+            }
+
+            override fun onDelete(id: Int) {
+                guestViewModel.delete(id)
+                guestViewModel.load(GuestConstants.FILTER_ID.PRESENTS)
+            }
+
+        }
+        mAdapter.listenerGuest(mListener)
+
+        //Obter o recycle
+        val recycle = binding.presentsGuest
+
+        //criar o layout
+        //layout linear por padrão vertical
+        recycle.layoutManager = LinearLayoutManager(context)
+
+        // adapter
+        recycle.adapter = mAdapter
+
+
         return root
+    }
+
+    override fun onResume() {
+        guestViewModel.load(GuestConstants.FILTER_ID.PRESENTS)
+        super.onResume()
+    }
+
+    private fun observe() {
+        //por estarmos em um fragment nao possui uma activity, então nao existe o this.
+        //viewLifecycleOwner sera responsável por isso
+        guestViewModel.guestModel.observe(viewLifecycleOwner, {
+            mAdapter.updatesGuest(it)
+        })
+        // quem faz a união entre o fragment  e o banco,e adapter entao sera chamado um método no adapter para mandar nossos intens dalis
     }
 
     override fun onDestroyView() {
