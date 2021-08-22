@@ -25,6 +25,7 @@ Aplicativo lista de convidados
 - Android
 - Kotlin
 - Data Class
+- Room
 
 ## O que eu aprendi
 
@@ -261,6 +262,94 @@ Entao para carregar os dados do usuario a cada momento que a tela receber o foco
 ```
 ![ciclo de vida](https://camo.githubusercontent.com/7a4f17faf127eb8dd85493ffe4960387765a61efcb97f0469469267fd7cf4c0d/68747470733a2f2f646576656c6f7065722e616e64726f69642e636f6d2f696d616765732f746f7069632f6c69627261726965732f6172636869746563747572652f766965776d6f64656c2d6c6966656379636c652e706e673f686c3d70742d6272)
 
+
+Para finalizar, aplicamos arquitetura completa aconselhada pelo (google), implementado o Room</br>
+Essa lib facilita o CRUD concentrando as camadas em 3, entity, database e a interface dao</br>
+Database e o responsável pela criação do banco de dados, nessa classe fica a versão do nosso banco, as versões são para manter os dado atualizado conforme a aplicação, sem perder os recursos anteriores, se precisar lançar update só mudo a versão, database e uma classe abstrata que fecho seu construtor aplicando princípio singleton. Interface vai ser referenciado como abstrata também no database
+A interface Dao vai ficar a lógica do nosso banco,update,delete e outros métodos que se aplica a lógica de negócio, por fim temos Entity que e responsável pelas colunas do banco.
+Quem esta instanciado o Dom e o Databse para implementar seus métodos neste caso e o Reposytory(esta classe não pertence a lógica ROOM)
+
+ ```kotlin
+ 
+ abstract class GuestDataBase : RoomDatabase() {
+
+    abstract fun guestDao(): Dao
+
+    companion object {
+        private lateinit var INSTANCE: GuestDataBase
+        fun getDatabase(context: Context): GuestDataBase {
+            if (!::INSTANCE.isInitialized) {
+                synchronized(GuestDataBase::class) {
+                    INSTANCE = Room.databaseBuilder(context, GuestDataBase::class.java, "guest")
+                        .allowMainThreadQueries()//permito rodar em thread separada se eu esquecer dessa linha gera erro
+                        .build()
+                }
+            }
+            return INSTANCE
+        }
+    }
+
+}
+ 
+ interface Dao {
+
+    @Insert()
+    fun salve(guest: GuestModel): Long
+
+    @Update()
+    fun update(guest: GuestModel): Int
+
+    @Delete
+    fun delete(guest: GuestModel)
+
+    //esse :id corresponde ao valor que eta no fun geUser(id: Int) se fosse batata seria batata aqui
+    @Query("Select * From Guest Where  id = :id")
+    fun getUser(id: Int): GuestModel
+
+    @Query("Select * From Guest")
+    fun getAll(): List<GuestModel>
+
+    @Query("Select * From Guest Where presence = 1")
+    fun getPresents(): List<GuestModel>
+
+    @Query("Select * From Guest Where presence = 0")
+    fun getAbsents(): List<GuestModel>
+}
+ 
+ @Entity(tableName = "Guest")
+class GuestModel() {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var id: Int = 0
+
+    @ColumnInfo(name = "name")
+    var name: String = ""
+
+    @ColumnInfo(name = "presence")
+    var presence: Boolean = true
+}
+
+class Repository private constructor(context: Context) {
+
+ private var getDatabase = GuestDataBase.getDatabase(context).guestDao()
+
+ companion object {
+        private lateinit var mRepository: Repository
+        fun getInstance(context: Context): Repository {
+            //por ter declaro minha variável no topo preciso de primeiro criou contexto,entao trato dentro do if
+            if (!::mRepository.isInitialized) {
+                mRepository = Repository(context)
+            }
+            return mRepository
+        }
+    }
+ 
+ }
+ ```
+
+
+![room](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
 
 
 # Feature
