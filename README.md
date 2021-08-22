@@ -258,7 +258,7 @@ Entao para carregar os dados do usuario a cada momento que a tela receber o foco
     
 
 ```
-![ciclo de vida](https://camo.githubusercontent.com/7a4f17faf127eb8dd85493ffe4960387765a61efcb97f0469469267fd7cf4c0d/68747470733a2f2f646576656c6f7065722e616e64726f69642e636f6d2f696d616765732f746f7069632f6c69627261726965732f6172636869746563747572652f766965776d6f64656c2d6c6966656379636c652e706e673f686c3d70742d6272)
+![ciclo](https://developer.android.com/guide/components/images/activity_lifecycle.png?hl=pt-br)
 
 
 Para finalizar, aplicamos arquitetura completa aconselhada pelo (google), implementado o Room</br>
