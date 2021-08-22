@@ -10,7 +10,6 @@ Aplicativo lista de convidados
   - <a href='#Construção' > Construção </a>
   - <a href='#o-que-eu-aprendi' > Aprendizado </a>
   - <a href='#Feature' > Feature </a>
-  - <a href='#Dependencias'> Dependencias </a>
 
 ## Visão Geral
 
