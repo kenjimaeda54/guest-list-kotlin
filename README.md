@@ -88,6 +88,8 @@ Bind sera responsável pelos atributos do nosso layout,por exemplo, usamos TextV
 Essa classe  herda interface ViewHolder, nos criamos a nossa própria e implementamos os membros. Por fim o método getIcon  apenas as contagens dos nossos filhos  da lita
 Observacao: Nosso viewlHolder não trata da parte logica só dos atributos, recuperando os, id, editando os campos. Se desejamos logica da aplicação como lidar com banco, mudar de navegação, isto e a ViewModel,
 , então criamos uma interface ListenerGuest, essa interface vai lidar com a lógica de adicionar deletar usurário.</br>
+Repara que nossa interface esta implementado no viewHolder pelo metodo listenerOnCLick e na classe AlguestFragment,para chamar nossa interface foi usado um ojbeto
+anonimo object: ListenerGuest{}
 Com  intent.put(extras ) passamos parâmetros nas rotas, no caso passamos o id que vai ser usado como referência para adicionar ou deletar usuários.
 
 ```kotlin
