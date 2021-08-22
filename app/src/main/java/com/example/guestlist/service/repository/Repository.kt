@@ -219,7 +219,6 @@ class Repository private constructor(context: Context) {
         return try {
             val db = getDatabaseHelper.readableDatabase
 
-            val selection = DataBaseConstants.GUEST.COLUMNS.PRESENCE + "= 1"
             //rawQuery nao e query mais segura para consultar banco
             //guest e o nome da tabela esta em databaseConstants
             val cursor = db.rawQuery("SELECT id, name, presence FROM Guest WHERE presence=0", null)

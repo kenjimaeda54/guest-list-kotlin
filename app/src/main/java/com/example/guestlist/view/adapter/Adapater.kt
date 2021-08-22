@@ -41,7 +41,7 @@ class AdapterGuest : RecyclerView.Adapter<ViewHolderGuest>() {
         notifyDataSetChanged()
 
     }
-    fun attachListener(listener: ListenerGuest){
+    fun listenerGuest(listener:ListenerGuest) {
         mListener = listener
     }
 

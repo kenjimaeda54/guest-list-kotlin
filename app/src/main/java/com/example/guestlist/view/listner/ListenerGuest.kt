@@ -1,5 +1,6 @@
 package com.example.guestlist.view.listner
 
 interface ListenerGuest {
-    fun onClick(id: Int)
+    fun onCLick(id: Int)
+    fun onDelete(id: Int)
 }

@@ -1,13 +1,14 @@
 package com.example.guestlist.view.viewHolder
 
+import android.app.AlertDialog
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.guestlist.R
 import com.example.guestlist.service.model.GuestModel
 import com.example.guestlist.view.listner.ListenerGuest
 
+//classe ViewHolderGuest extend de RecyclerView, então os parâmetros vai na classe, nao na extensão
 class ViewHolderGuest(itemView: View, private val listener: ListenerGuest) :
     RecyclerView.ViewHolder(itemView) {
     //viewHolder so trata das atribuições.
@@ -20,8 +21,21 @@ class ViewHolderGuest(itemView: View, private val listener: ListenerGuest) :
         val name = itemView.findViewById<TextView>(R.id.text_name_row)
         name.text = guest.name
         name.setOnClickListener {
-            listener.onClick(guest.id)
+            listener.onCLick(guest.id)
         }
+        name.setOnLongClickListener {
+            AlertDialog.Builder(itemView.context)
+                .setTitle(R.string.remocao_convidado)
+                .setMessage(R.string.deseja_remover)
+                .setPositiveButton(R.string.remover) { dialog, wich ->
+                    listener.onDelete(guest.id)
+                }
+                //ultimo parâmetro a funcao que o botao cancelar vai fazer no casso nada
+                .setNeutralButton(R.string.cancelar, null)
+                .show()
+            true
+        }
+
     }
 
 }

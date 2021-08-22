@@ -22,7 +22,8 @@ import com.example.guestlist.viewModel.AllGuestViewModel
 class AllGuestFragment : Fragment() {
 
     private lateinit var allGuestViewModel: AllGuestViewModel
-    private lateinit var mListenerGuest: ListenerGuest
+    private lateinit var mListener: ListenerGuest
+
     private val mAdapter = AdapterGuest()
     private var _binding: FragmentAllBinding? = null
 
@@ -41,19 +42,27 @@ class AllGuestFragment : Fragment() {
         val root: View = binding.root
         observe()
 
-        mListenerGuest =  object: ListenerGuest{
-            override fun onClick(id: Int) {
-                val intent = Intent(context,GuestFormActivity::class.java)
+        //nossa interface e uma classe anônima então nao pode ser chamada direto
+        mListener = object : ListenerGuest {
+            override fun onCLick(id: Int) {
+                val intent = Intent(context, GuestFormActivity::class.java)
                 //para passar parâmetros em para outras activy usando navegacao usamos o putString,se desejamos passar string,
                 //putInt para passar inteiros
                 val bundle = Bundle()
-                bundle.putInt(GuestConstants.GUESTID,id)
+                bundle.putInt(GuestConstants.GUESTID, id)
                 intent.putExtras(bundle)
+
                 startActivity(intent)
             }
 
+            override fun onDelete(id: Int) {
+                allGuestViewModel.delete(id)
+                allGuestViewModel.load()
+            }
+
         }
-        mAdapter.attachListener(mListenerGuest)
+        mAdapter.listenerGuest(mListener)
+
 
         //para lidar com listagens nos criamos recycleView
         //ele precisa 3 passo

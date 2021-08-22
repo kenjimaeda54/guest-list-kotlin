@@ -2,7 +2,6 @@ package com.example.guestlist.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
@@ -14,14 +13,19 @@ import com.example.guestlist.viewModel.GuestFormViewModel
 class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mGuestViewModel: GuestFormViewModel
+    private var mGuestId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guest)
         mGuestViewModel = ViewModelProvider(this).get(GuestFormViewModel::class.java)
-        load()
+        val presenceId = findViewById<RadioButton>(R.id.presentsButton)
+        presenceId.isChecked = true
+
+        //load normalmente gasta maior tempo para ser processado
         listeners()
         observes()
+        load()
 
     }
 
@@ -29,22 +33,26 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         val id = view.id
         if (id == R.id.buttonSalve) {
             val nameId: TextView = findViewById(R.id.editName)
-            val name = nameId.text.toString();
-            val presenceId: RadioButton = findViewById(R.id.presentsButton)
-            val presence = presenceId.isChecked;
-            mGuestViewModel.salve(name, presence)
+            val name = nameId.text.toString()
+            val presenceId: RadioButton = findViewById<RadioButton>(R.id.presentsButton)
+            val presence = presenceId.isChecked
+            //no modelo MVVM quem cuida da regra de logica e a viewModel
+            //observa que mGuestId no topo  da aplicacao inicia 0,
+            // depois que a tela ja esta criada,ela nao vai mais sofrer alteracao,valor vai ser o que esta no load
+            //caso o bundle nao seja nullo
+            mGuestViewModel.salve(mGuestId, name, presence)
 
         }
     }
 
     private fun load() {
-        //nao preciso instance intent ja esta sendo feita pelo AppCompatActivity
         val bundle = intent.extras
-        //preciso tratar possibilidade do bundle vim nullo
         if (bundle != null) {
-            mGuestViewModel.load(bundle.getInt(GuestConstants.GUESTID))
+            mGuestId = bundle.getInt(GuestConstants.GUESTID)
+            mGuestViewModel.load(mGuestId)
         }
     }
+
 
     private fun observes() {
         mGuestViewModel.presentModel.observe(this, {
@@ -58,17 +66,19 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             //fecha activy
             finish()
         })
+
         mGuestViewModel.guestUser.observe(this, {
             val name = findViewById<EditText>(R.id.editName)
-            val presenceButton = findViewById<RadioButton>(R.id.presentsButton)
-            val absenteesButton = findViewById<RadioButton>(R.id.absentsButton)
             name.setText(it.name)
+            val presentsButton = findViewById<RadioButton>(R.id.presentsButton)
+            val absentsButton = findViewById<RadioButton>(R.id.absentsButton)
             if (it.presence) {
-                presenceButton.isChecked = true
+                presentsButton.isChecked = true
             } else {
-                absenteesButton.isChecked = true
+                absentsButton.isChecked = true
             }
         })
+
 
     }
 

@@ -24,4 +24,8 @@ class AllGuestViewModel(application: Application) : AndroidViewModel(application
 
     }
 
+    fun delete(id: Int){
+        mRepository.delete(id)
+    }
+
 }

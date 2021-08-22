@@ -20,11 +20,18 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
     private val mGuestUser = MutableLiveData<GuestModel>()
     var guestUser = mGuestUser
 
-    fun salve(name: String, presence: Boolean) {
+
+    fun salve(id: Int,name: String, presence: Boolean) {
         //meu salve precisa de tres argumentos,caso deseja omitir um,posso
         //simplesmente chamar os parâmetros,exemplo: id,name,presence.
         //chamei name e presence
-        mPresent.value  = mRepository.salve(GuestModel(name = name, presence = presence))
+        if(id == 0){
+            mPresent.value  = mRepository.salve(GuestModel(id,name,presence))
+        }else{
+           mPresent.value  = mRepository.update(GuestModel(id,name,presence))
+        }
+
+
        //vai retornar ture ou false no método save
 
     }
@@ -32,4 +39,6 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
     fun load(id: Int){
        mGuestUser.value = mRepository.getUser(id)
     }
+
+
 }
