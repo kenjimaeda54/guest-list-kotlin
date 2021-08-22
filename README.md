@@ -211,6 +211,41 @@ altura total,cada linha vai ocupar total da tela-->
 
 ```
 
+Usamos para listagem dos bancos  o anti-parting Singleton, nossa classe vai possuir apenas uma instância , ideal para casos de uso de banco de dados</br>
+Por ser um anti padrão de software, sao poucos casos de uso. Em caso de crud em banco de dados e excelente.
+Para realizar o singleton primeiro fecha o construtor é segundo cria um membro estático, usamos o companion object, recurso do kotlin para fazer isso</br>
+Repara que precisamos do context. Fragment não possui contexto  só em Activy, então herdamos a interface AndroidViewlModel, assim e possível implementar context na classe GuestViewMOdel
+
+```kotlin
+
+class Repository private constructor(context: Context) {
+
+
+    companion object {
+        private lateinit var mRepository: Repository
+        fun getInstance(context: Context): Repository {
+            if (!::mRepository.isInitialized) {
+                mRepository = Repository(context)
+            }
+            return mRepository
+        }
+    }
+
+
+
+}
+
+///----------------------------------------///
+class GuestViewModel(application: Application) : AndroidViewModel(application) {
+
+    private var mRepository: Repository = Repository.getInstance(application)
+    
+}    
+
+
+
+```
+
 
 
 
