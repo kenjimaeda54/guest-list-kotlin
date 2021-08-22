@@ -1,5 +1,24 @@
 package com.example.guestlist.service.model
 
-//quando voce pretende passar varias informacoes para funcoes que esta em outras classes e boa pratica criar um model,assim preserva mesmo contrato
-//entre as funcoes que estao executando esse método. Por exmeplo este modelo eta sendo usando no viewModel e repository
-data class GuestModel(var  id:Int = 0,var name: String, var presence: Boolean)
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+//entity
+
+//var  id:Int = 0,var name: String, var presence: Boolean
+
+@Entity
+class GuestModel() {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int = 0
+
+    @ColumnInfo(name = "name")
+    var name: String = ""
+
+    @ColumnInfo(name = "presence")
+    var presence: Boolean = true
+}

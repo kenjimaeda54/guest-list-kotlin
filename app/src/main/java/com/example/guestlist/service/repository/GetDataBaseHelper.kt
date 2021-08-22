@@ -19,7 +19,7 @@ class GetDataBaseHelper(context: Context) :
 
     companion object {
         //versao do database e a versao do nosso banco de dados,por exemplo
-        //caso desejo atualizar para acresentar novas fetatures no banco,para nao perder
+        //caso desejo atualizar para acrescentar novas fetatures no banco,para nao perder
         //os novos usuários mudo a versao,assim sera o método onUpgrade
         //que sera chamado. Nao correndo risco de perder nenhum dados
         private const val DATABASE_VERSION = 1
