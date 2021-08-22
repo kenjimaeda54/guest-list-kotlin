@@ -20,8 +20,6 @@ Aplicativo lista de convidados
 
 
 ## Construção
-
-- React
 - Android
 - Kotlin
 - Data Class
