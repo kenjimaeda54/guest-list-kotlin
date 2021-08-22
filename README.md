@@ -269,6 +269,7 @@ Quem esta instanciado o Dom e o Databse para implementar seus métodos neste cas
 
  ```kotlin
  
+ @Database(entities = [GuestModel::class], version = 1)
  abstract class GuestDataBase : RoomDatabase() {
 
     abstract fun guestDao(): Dao
@@ -288,7 +289,10 @@ Quem esta instanciado o Dom e o Databse para implementar seus métodos neste cas
     }
 
 }
- 
+
+//--------------------------------------------------------//
+
+ @Dao
  interface Dao {
 
     @Insert()
