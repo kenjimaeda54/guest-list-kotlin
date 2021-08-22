@@ -362,3 +362,4 @@ class Repository private constructor(context: Context) {
 - SINGLETON
 - SQL
 - ANDROID
+- ROOM
