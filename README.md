@@ -314,6 +314,7 @@ Quem esta instanciado o Dom e o Databse para implementar seus métodos neste cas
     fun getAbsents(): List<GuestModel>
 }
  
+//-----------------------------------------------// 
  @Entity(tableName = "Guest")
 class GuestModel() {
 
@@ -327,6 +328,8 @@ class GuestModel() {
     @ColumnInfo(name = "presence")
     var presence: Boolean = true
 }
+
+//--------------------------------------//
 
 class Repository private constructor(context: Context) {
 
