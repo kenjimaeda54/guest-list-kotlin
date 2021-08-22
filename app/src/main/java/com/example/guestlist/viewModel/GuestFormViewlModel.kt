@@ -25,10 +25,17 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
         //meu salve precisa de tres argumentos,caso deseja omitir um,posso
         //simplesmente chamar os parâmetros,exemplo: id,name,presence.
         //chamei name e presence
+        val mGuestModel = GuestModel().apply {
+            this.id = id
+            this.name = name
+            this.presence = presence
+        }
+
         if(id == 0){
-            mPresent.value  = mRepository.salve(GuestModel(id,name,presence))
+
+            mPresent.value  = mRepository.salve(mGuestModel)
         }else{
-           mPresent.value  = mRepository.update(GuestModel(id,name,presence))
+           mPresent.value  = mRepository.update(mGuestModel)
         }
 
 

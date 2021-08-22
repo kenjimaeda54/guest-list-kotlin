@@ -11,7 +11,7 @@ import com.example.guestlist.service.repository.Repository
 
 class GuestViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var mRepository: Repository = Repository.getInstance(application)
+    private var mRepository: Repository = Repository.getInstance(application.applicationContext)
 
 
     //guestModel vai ate o repository pega  a instância do banco
@@ -37,7 +37,8 @@ class GuestViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun delete(id: Int) {
-        mRepository.delete(id)
+        val guest = mRepository.getUser(id)
+        mRepository.delete(guest)
     }
 
 }

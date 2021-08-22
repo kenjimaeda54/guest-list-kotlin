@@ -9,12 +9,12 @@ import androidx.room.PrimaryKey
 
 //var  id:Int = 0,var name: String, var presence: Boolean
 
-@Entity
+@Entity(tableName = "Guest")
 class GuestModel() {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0
+    var id: Int = 0
 
     @ColumnInfo(name = "name")
     var name: String = ""
